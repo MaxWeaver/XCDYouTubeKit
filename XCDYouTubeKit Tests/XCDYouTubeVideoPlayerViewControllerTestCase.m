@@ -49,7 +49,7 @@
 	__weak XCTestExpectation *expectation = [self expectationWithDescription:@""];
 	XCDYouTubeVideoPlayerViewController *videoPlayerViewController = [[XCDYouTubeVideoPlayerViewController alloc] initWithVideoIdentifier:@"EdeVaT-zZt4"];
 	videoPlayerViewController.preferredVideoQualities = @[];
-	[[NSNotificationCenter defaultCenter] addObserverForName:MPMoviePlayerPlaybackDidFinishNotification object:videoPlayerViewController.moviePlayer queue:nil usingBlock:^(NSNotification *notification)
+	[[NSNotificationCenter defaultCenter] addObserverForName:MPMoviePlayerPlaybackDidFinishNotification object:videoPlayerViewController.player queue:nil usingBlock:^(NSNotification *notification)
 	{
 		NSError *error = notification.userInfo[XCDMoviePlayerPlaybackDidFinishErrorUserInfoKey];
 		MPMovieFinishReason finishReason = [notification.userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
@@ -65,7 +65,7 @@
 {
 	__weak XCTestExpectation *expectation = [self expectationWithDescription:@""];
 	XCDYouTubeVideoPlayerViewController *videoPlayerViewController = [[XCDYouTubeVideoPlayerViewController alloc] initWithVideoIdentifier:@"1kIsylLeHHU"];
-	[[NSNotificationCenter defaultCenter] addObserverForName:MPMoviePlayerPlaybackDidFinishNotification object:videoPlayerViewController.moviePlayer queue:nil usingBlock:^(NSNotification *notification)
+	[[NSNotificationCenter defaultCenter] addObserverForName:MPMoviePlayerPlaybackDidFinishNotification object:videoPlayerViewController.player queue:nil usingBlock:^(NSNotification *notification)
 	{
 		NSError *error = notification.userInfo[XCDMoviePlayerPlaybackDidFinishErrorUserInfoKey];
 		MPMovieFinishReason finishReason = [notification.userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] integerValue];
@@ -81,11 +81,9 @@
 {
 	UIView *view = [UIView new];
 	XCDYouTubeVideoPlayerViewController *videoPlayerViewController = [[XCDYouTubeVideoPlayerViewController alloc] initWithVideoIdentifier:@"EdeVaT-zZt4"];
-	XCTAssertNil(videoPlayerViewController.moviePlayer.view.superview);
+	XCTAssertNil(videoPlayerViewController.view.superview);
 	[videoPlayerViewController presentInView:view];
-	XCTAssertEqualObjects(videoPlayerViewController.moviePlayer.view.superview, view);
-	XCTAssertEqual(videoPlayerViewController.moviePlayer.controlStyle, MPMovieControlStyleEmbedded);
-	XCTAssertFalse(videoPlayerViewController.moviePlayer.currentPlaybackRate > 0.0f);
+	XCTAssertEqualObjects(videoPlayerViewController.view.superview, view);
 }
 
 @end

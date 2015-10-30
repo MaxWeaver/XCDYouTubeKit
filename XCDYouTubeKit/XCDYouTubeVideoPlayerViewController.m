@@ -8,6 +8,9 @@
 
 #import <objc/runtime.h>
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
+
 NSString *const XCDMoviePlayerPlaybackDidFinishErrorUserInfoKey = @"error"; // documented in -[MPMoviePlayerController initWithContentURL:]
 
 NSString *const XCDYouTubeVideoPlayerViewControllerDidReceiveMetadataNotification = @"XCDYouTubeVideoPlayerViewControllerDidReceiveMetadataNotification";
@@ -49,8 +52,6 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 	return [self initWithVideoIdentifier:nil];
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wobjc-designated-initializers"
 - (instancetype) initWithContentURL:(NSURL *)contentURL
 {
 	@throw [NSException exceptionWithName:NSGenericException reason:@"Use the `initWithVideoIdentifier:` method instead." userInfo:nil];
@@ -59,7 +60,7 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 - (instancetype) initWithVideoIdentifier:(NSString *)videoIdentifier
 {
 	if ([[[UIDevice currentDevice] systemVersion] integerValue] >= 8)
-		self = [super initWithContentURL:nil];
+		self = [super init];
 	else
 		self = [super init];
 	
@@ -68,13 +69,17 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 	
 	// See https://github.com/0xced/XCDYouTubeKit/commit/cadec1c3857d6a302f71b9ce7d1ae48e389e6890
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
-	
+	self.shouldAutoPlay = YES;
+	if(!self.player){
+		self.player = [AVPlayer new];
+	}
+		[self.player addObserver:self forKeyPath:@"status" options:NSKeyValueObservingOptionNew context:nil];
+
 	if (videoIdentifier)
 		self.videoIdentifier = videoIdentifier;
 	
 	return self;
 }
-#pragma clang diagnostic pop
 
 #pragma mark - Public
 
@@ -128,11 +133,10 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 	
 	self.embedded = YES;
 	
-	self.moviePlayer.controlStyle = MPMovieControlStyleEmbedded;
-	self.moviePlayer.view.frame = CGRectMake(0.f, 0.f, view.bounds.size.width, view.bounds.size.height);
-	self.moviePlayer.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-	if (![view.subviews containsObject:self.moviePlayer.view])
-		[view addSubview:self.moviePlayer.view];
+	self.view.frame = CGRectMake(0.f, 0.f, view.bounds.size.width, view.bounds.size.height);
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	if (![view.subviews containsObject:self.view])
+		[view addSubview:self.view];
 	objc_setAssociatedObject(view, XCDYouTubeVideoPlayerViewControllerKey, self, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -156,18 +160,17 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 #pragma clang diagnostic pop
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:XCDYouTubeVideoPlayerViewControllerDidReceiveVideoNotification object:self userInfo:@{ XCDYouTubeVideoUserInfoKey: video }];
-	
-	self.moviePlayer.contentURL = streamURL;
+	[self.player replaceCurrentItemWithPlayerItem:[AVPlayerItem playerItemWithURL:streamURL]];;
 }
 
 - (void) stopWithError:(NSError *)error
 {
 	NSDictionary *userInfo = @{ MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackError),
 	                            XCDMoviePlayerPlaybackDidFinishErrorUserInfoKey: error };
-	[[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerPlaybackDidFinishNotification object:self.moviePlayer userInfo:userInfo];
+	[[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerPlaybackDidFinishNotification object:self.player userInfo:userInfo];
 	
 	if (self.isEmbedded)
-		[self.moviePlayer.view removeFromSuperview];
+		[self.view removeFromSuperview];
 	else
 		[self.presentingViewController dismissMoviePlayerViewControllerAnimated];
 }
@@ -181,8 +184,7 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 	if (![self isBeingPresented])
 		return;
 	
-	self.moviePlayer.controlStyle = MPMovieControlStyleFullscreen;
-	[self.moviePlayer play];
+	[self.player play];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -195,4 +197,16 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 	[self.videoOperation cancel];
 }
 
+#pragma mark Observer 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+	if([keyPath isEqualToString:@"status"]){
+		NSNumber *newValue = [change valueForKey:NSKeyValueChangeNewKey];
+		if (newValue && newValue.intValue == 1)
+		{
+			if ((self.player.rate == 0.0)  && self.shouldAutoPlay) {
+				[self.player play];
+			}
+		}
+	}
+}
 @end

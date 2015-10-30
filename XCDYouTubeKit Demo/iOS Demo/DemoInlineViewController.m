@@ -22,7 +22,7 @@
 	
 	// Beware, viewWillDisappear: is called when the player view enters full screen on iOS 6+
 	if ([self isMovingFromParentViewController])
-		[self.videoPlayerViewController.moviePlayer stop];
+		[self.videoPlayerViewController.player pause];
 }
 
 - (IBAction) load:(id)sender
@@ -31,19 +31,15 @@
 	
 	NSString *videoIdentifier = [[NSUserDefaults standardUserDefaults] objectForKey:@"VideoIdentifier"];
 	self.videoPlayerViewController = [[XCDYouTubeVideoPlayerViewController alloc] initWithVideoIdentifier:videoIdentifier];
-	self.videoPlayerViewController.moviePlayer.backgroundPlaybackEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"PlayVideoInBackground"];
+	self.videoPlayerViewController.backgroundPlaybackEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"PlayVideoInBackground"];
 	[self.videoPlayerViewController presentInView:self.videoContainerView];
 	
-	if (self.prepareToPlaySwitch.on)
-		[self.videoPlayerViewController.moviePlayer prepareToPlay];
-	
-	self.videoPlayerViewController.moviePlayer.shouldAutoplay = self.shouldAutoplaySwitch.on;
+	if (self.shouldAutoplaySwitch.on)
+		self.videoPlayerViewController.shouldAutoPlay = YES;
 }
 
 - (IBAction) prepareToPlay:(UISwitch *)sender
 {
-	if (sender.on)
-		[self.videoPlayerViewController.moviePlayer prepareToPlay];
 }
 
 @end

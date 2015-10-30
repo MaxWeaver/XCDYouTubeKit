@@ -23,8 +23,8 @@
 	[[NSUserDefaults standardUserDefaults] setObject:apiKey forKey:@"YouTubeAPIKey"];
 	
 	XCDYouTubeVideoPlayerViewController *videoPlayerViewController = [XCDYouTubeVideoPlayerViewController new];
-	videoPlayerViewController.moviePlayer.backgroundPlaybackEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"PlayVideoInBackground"];
-	[self presentMoviePlayerViewControllerAnimated:videoPlayerViewController];
+	videoPlayerViewController.backgroundPlaybackEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"PlayVideoInBackground"];
+	[self.navigationController presentViewController:videoPlayerViewController animated:YES completion:nil];
 	
 	// https://developers.google.com/youtube/v3/docs/videos/list
 	NSURL *mostPopularURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.googleapis.com/youtube/v3/videos?key=%@&chart=mostPopular&part=id", apiKey]];
@@ -33,6 +33,7 @@
 		id json = [NSJSONSerialization JSONObjectWithData:data ?: [NSData new] options:0 error:NULL];
 		NSString *videoIdentifier = [[[json valueForKeyPath:@"items.id"] firstObject] description];
 		videoPlayerViewController.videoIdentifier = videoIdentifier;
+		videoPlayerViewController.shouldAutoPlay = YES;
 	}];
 }
 

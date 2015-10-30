@@ -9,7 +9,8 @@
 #endif
 
 #import <MediaPlayer/MediaPlayer.h>
-
+#import <AVKit/AVKit.h>
+#import "AVPlayerViewController+Migration.h"
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -41,7 +42,7 @@ MP_EXTERN NSString *const XCDYouTubeVideoUserInfoKey;
  *
  *  Use the `<presentInView:>` method to play a YouTube video inline.
  */
-@interface XCDYouTubeVideoPlayerViewController : MPMoviePlayerViewController
+@interface XCDYouTubeVideoPlayerViewController : AVPlayerViewController
 
 /**
  *  ------------------
@@ -70,6 +71,17 @@ MP_EXTERN NSString *const XCDYouTubeVideoUserInfoKey;
  *  The 11 characters YouTube video identifier.
  */
 @property (nonatomic, copy, nullable) NSString *videoIdentifier;
+
+/**
+ *  ------------------------------------
+ *  @name Enabling Autoplay video
+ *  ------------------------------------
+ */
+
+/**
+ *  Default YES.
+ */
+@property (assign) BOOL shouldAutoPlay;
 
 /**
  *  ------------------------------------------

@@ -11,7 +11,7 @@
 #define NSFoundationVersionNumber_iOS_7_0 1047.2
 #endif
 
-@implementation MPMoviePlayerController (BackgroundPlayback)
+@implementation AVPlayerViewController (BackgroundPlayback)
 
 + (void) load
 {
@@ -23,8 +23,8 @@
 	dispatch_async(dispatch_get_main_queue(), ^{
 		// Register for these notifications as early as possible in order to be called before -[MPAVController _applicationWillResignActive:] which calls `_pausePlaybackIfNecessary`.
 		NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
-		[defaultCenter addObserver:self selector:@selector(backgroundPlayback_moviePlayerNowPlayingMovieDidChange:) name:MPMoviePlayerNowPlayingMovieDidChangeNotification object:nil];
-		[defaultCenter addObserver:self selector:@selector(backgroundPlayback_moviePlayerPlaybackDidFinish:) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+//		[defaultCenter addObserver:self selector:@selector(backgroundPlayback_moviePlayerNowPlayingMovieDidChange:) name:MPMoviePlayerNowPlayingMovieDidChangeNotification object:nil];
+		[defaultCenter addObserver:self selector:@selector(backgroundPlayback_moviePlayerPlaybackDidFinish:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
 		[defaultCenter addObserver:self selector:@selector(backgroundPlayback_applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
 		[defaultCenter addObserver:self selector:@selector(backgroundPlayback_applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 	});
@@ -49,7 +49,7 @@ static const void * const BackgroundPlaybackEnabledKey = &BackgroundPlaybackEnab
 	objc_setAssociatedObject(self, BackgroundPlaybackEnabledKey, @(backgroundPlaybackEnabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-static __weak MPMoviePlayerController *currentMoviePlayerController;
+static __weak AVPlayerViewController *currentMoviePlayerController;
 
 + (void) backgroundPlayback_moviePlayerNowPlayingMovieDidChange:(NSNotification *)notification
 {

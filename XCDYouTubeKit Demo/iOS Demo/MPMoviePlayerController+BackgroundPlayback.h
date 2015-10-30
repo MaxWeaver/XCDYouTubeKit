@@ -2,9 +2,9 @@
 //  Copyright (c) 2013-2015 Cédric Luthi. All rights reserved.
 //
 
-@import MediaPlayer;
+@import AVKit;
 
-@interface MPMoviePlayerController (BackgroundPlayback)
+@interface AVPlayerViewController (BackgroundPlayback)
 
 /**
  *  When enabling background playback:
