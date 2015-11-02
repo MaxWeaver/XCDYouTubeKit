@@ -160,7 +160,18 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 #pragma clang diagnostic pop
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:XCDYouTubeVideoPlayerViewControllerDidReceiveVideoNotification object:self userInfo:@{ XCDYouTubeVideoUserInfoKey: video }];
-	[self.player replaceCurrentItemWithPlayerItem:[AVPlayerItem playerItemWithURL:streamURL]];;
+	[self.player replaceCurrentItemWithPlayerItem:[AVPlayerItem playerItemWithURL:streamURL]];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver: self
+											 selector: @selector(playerItemDidReachEnd:)
+												 name: AVPlayerItemDidPlayToEndTimeNotification
+											   object: [self.player currentItem]];
+}
+
+- (void) playerItemDidReachEnd:(NSNotification *)notification{
+	NSDictionary *userInfo = @{ MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackEnded)};
+	[[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerPlaybackDidFinishNotification object:self.player userInfo:userInfo];
 }
 
 - (void) stopWithError:(NSError *)error
