@@ -162,6 +162,9 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 	[[NSNotificationCenter defaultCenter] postNotificationName:XCDYouTubeVideoPlayerViewControllerDidReceiveVideoNotification object:self userInfo:@{ XCDYouTubeVideoUserInfoKey: video }];
 	[self.player replaceCurrentItemWithPlayerItem:[AVPlayerItem playerItemWithURL:streamURL]];
 	
+	if (streamURL) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:	MPMoviePlayerNowPlayingMovieDidChangeNotification object:self.player userInfo:userInfo];
+	}
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver: self
 											 selector: @selector(playerItemDidReachEnd:)
