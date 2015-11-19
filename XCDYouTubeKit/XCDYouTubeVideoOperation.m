@@ -12,6 +12,8 @@
 #import "XCDYouTubePlayerScript.h"
 #import "XCDYouTubeLogger.h"
 
+#import <MediaPlayer/MediaPlayer.h>
+
 static const void * const XCDYouTubeRequestTypeKey = &XCDYouTubeRequestTypeKey;
 
 typedef NS_ENUM(NSUInteger, XCDYouTubeRequestType) {
@@ -221,6 +223,9 @@ typedef NS_ENUM(NSUInteger, XCDYouTubeRequestType) {
 {
 	self.error = self.youTubeError ?: self.lastError;
 	XCDYouTubeLogError(@"Video operation finished with error: %@\nDomain: %@\nCode:   %@\nUser Info: %@", self.error.localizedDescription, self.error.domain, @(self.error.code), self.error.userInfo);
+    NSDictionary *userInfo = @{ MPMoviePlayerPlaybackDidFinishReasonUserInfoKey: @(MPMovieFinishReasonPlaybackError),
+                                @"error": self.error };
+    [[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerPlaybackDidFinishNotification object:nil userInfo:userInfo];
 	[self finish];
 }
 

@@ -163,16 +163,15 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
     dispatch_async(dispatch_get_main_queue(), ^{
         AVPlayerItem * item = [AVPlayerItem playerItemWithURL:streamURL];
         if (!item) {
-            NSLog(@"");
+            NSLog(@"Item failed to load with Current URL:%@",streamURL.absoluteString);
         }else{
             if (item != self.player.currentItem) {
                 [self.player replaceCurrentItemWithPlayerItem:item];
+                [[NSNotificationCenter defaultCenter] postNotificationName:	MPMoviePlayerNowPlayingMovieDidChangeNotification object:self userInfo:userInfo];
+                NSLog(@"Player = %@",self.player.description);
             }
         }
     });
-	if (streamURL) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:	MPMoviePlayerNowPlayingMovieDidChangeNotification object:self userInfo:userInfo];
-	}
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver: self
 											 selector: @selector(playerItemDidReachEnd:)
@@ -226,7 +225,17 @@ NSString *const XCDYouTubeVideoUserInfoKey = @"Video";
 		if (newValue && newValue.intValue == 1)
 		{
 			if ((self.player.rate == 0.0)  && self.shouldAutoPlay) {
+                AVPlayerItem *playerItem = self.player.currentItem;
+                NSArray *tracks = [playerItem tracks];
+                for (AVPlayerItemTrack *playerItemTrack in tracks)
+                {
+                    if ([playerItemTrack.assetTrack hasMediaCharacteristic:AVMediaCharacteristicVisual])
+                    {
+                        playerItemTrack.enabled = YES; // disable the track
+                    }
+                }
 				[self.player play];
+
 			}
 		}
 	}
