@@ -1,5 +1,5 @@
 //
-//  Copyright (c) 2013-2015 Cédric Luthi. All rights reserved.
+//  Copyright (c) 2013-2016 Cédric Luthi. All rights reserved.
 //
 
 #if !__has_feature(nullability)
@@ -97,7 +97,11 @@ extern NSString *const XCDYouTubeVideoQualityHTTPLiveStreaming;
  *  @see XCDYouTubeVideoQuality
  *  @see expirationDate
  */
+#if __has_feature(objc_generics)
+@property (nonatomic, readonly) NSDictionary<id, NSURL *> *streamURLs;
+#else
 @property (nonatomic, readonly) NSDictionary *streamURLs;
+#endif
 
 /**
  *  The expiration date of the video.

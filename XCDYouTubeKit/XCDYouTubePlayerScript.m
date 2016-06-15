@@ -1,12 +1,12 @@
 //
-//  Copyright (c) 2013-2015 Cédric Luthi. All rights reserved.
+//  Copyright (c) 2013-2016 Cédric Luthi. All rights reserved.
 //
 
 #import "XCDYouTubePlayerScript.h"
 
 #import <JavaScriptCore/JavaScriptCore.h>
 
-#import "XCDYouTubeLogger.h"
+#import "XCDYouTubeLogger+Private.h"
 
 @interface XCDYouTubePlayerScript ()
 @property (nonatomic, strong) JSContext *context;
@@ -18,10 +18,9 @@
 - (instancetype) initWithString:(NSString *)string
 {
 	if (!(self = [super init]))
-		return nil;
+		return nil; // LCOV_EXCL_LINE
 	
 	NSString *script = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-	XCDYouTubeLogTrace(@"%@", script);
 	NSRegularExpression *anonymousFunctionRegularExpression = [NSRegularExpression regularExpressionWithPattern:@"\\(function\\([^)]*\\)\\{(.*)\\}\\)\\([^)]*\\)" options:NSRegularExpressionDotMatchesLineSeparators error:NULL];
 	NSTextCheckingResult *anonymousFunctionResult = [anonymousFunctionRegularExpression firstMatchInString:script options:(NSMatchingOptions)0 range:NSMakeRange(0, script.length)];
 	if (anonymousFunctionResult.numberOfRanges > 1)
@@ -35,14 +34,16 @@
 	};
 	
 	NSDictionary *environment = @{
-								  @"document": @{
-										  @"documentElement": @{}
-										  },
-								  @"location": @{
-										  @"hash": @""
-										  },
-								  @"navigator": @{},
-								  };
+		@"document": @{
+			@"documentElement": @{}
+		},
+		@"location": @{
+			@"hash": @""
+		},
+		@"navigator": @{
+			@"userAgent": @""
+		},
+	};
 	_context[@"window"] = @{};
 	for (NSString *propertyName in environment)
 	{
