@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "7.0"
   s.osx.deployment_target = "10.9"
   s.source_files          = "XCDYouTubeKit"
-  s.public_header_files   = "XCDYouTubeKit/XCDYouTube{Client,Error,Kit,Operation,Video,VideoOperation,VideoPlayerViewController}.h", 'XCDYouTubeKit/AVPlayerViewController+Migration.h'
+  s.public_header_files   = "XCDYouTubeKit/XCDYouTube{Client,Error,Kit,Operation,Logger,Video,VideoOperation,VideoPlayerViewController}.h", 'XCDYouTubeKit/AVPlayerViewController+Migration.h'
   s.osx.exclude_files     = "XCDYouTubeKit/XCDYouTubeVideoPlayerViewController.{h,m}"
   s.ios.frameworks        = "JavaScriptCore", "MediaPlayer","AVFoundation","AVKit"
   s.osx.frameworks        = "JavaScriptCore"

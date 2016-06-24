@@ -9,12 +9,14 @@
 /* Begin PBXBuildFile section */
 		01591B2C1BE371AE000DAC26 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01591B2B1BE371AE000DAC26 /* AVFoundation.framework */; };
 		01591B2E1BE37261000DAC26 /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01591B2D1BE37261000DAC26 /* AVKit.framework */; };
-		01591B311BE37337000DAC26 /* AVPlayerViewController+Migration.m in Sources */ = {isa = PBXBuildFile; fileRef = 01591B301BE37337000DAC26 /* AVPlayerViewController+Migration.m */; settings = {ASSET_TAGS = (); }; };
-		01591B321BE37346000DAC26 /* AVPlayerViewController+Migration.m in Sources */ = {isa = PBXBuildFile; fileRef = 01591B301BE37337000DAC26 /* AVPlayerViewController+Migration.m */; settings = {ASSET_TAGS = (); }; };
+		01591B311BE37337000DAC26 /* AVPlayerViewController+Migration.m in Sources */ = {isa = PBXBuildFile; fileRef = 01591B301BE37337000DAC26 /* AVPlayerViewController+Migration.m */; };
+		01591B321BE37346000DAC26 /* AVPlayerViewController+Migration.m in Sources */ = {isa = PBXBuildFile; fileRef = 01591B301BE37337000DAC26 /* AVPlayerViewController+Migration.m */; };
 		01591B331BE378C7000DAC26 /* AVPlayerViewController+Migration.h in Headers */ = {isa = PBXBuildFile; fileRef = 01591B2F1BE37337000DAC26 /* AVPlayerViewController+Migration.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		01591B341BE3798F000DAC26 /* AVPlayerViewController+Migration.h in Headers */ = {isa = PBXBuildFile; fileRef = 01591B2F1BE37337000DAC26 /* AVPlayerViewController+Migration.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		01591B351BE3798F000DAC26 /* AVPlayerViewController+Migration.m in Sources */ = {isa = PBXBuildFile; fileRef = 01591B301BE37337000DAC26 /* AVPlayerViewController+Migration.m */; settings = {ASSET_TAGS = (); }; };
+		01591B351BE3798F000DAC26 /* AVPlayerViewController+Migration.m in Sources */ = {isa = PBXBuildFile; fileRef = 01591B301BE37337000DAC26 /* AVPlayerViewController+Migration.m */; };
 		01591B361BE379B4000DAC26 /* AVPlayerViewController+Migration.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 01591B2F1BE37337000DAC26 /* AVPlayerViewController+Migration.h */; };
+		01E5F8B91D11ACCE00B14286 /* XCDYouTubeLogger.h in Copy Files */ = {isa = PBXBuildFile; fileRef = C2597EA41B0CD2120030E9F2 /* XCDYouTubeLogger.h */; };
+		01E5F8BA1D11ACF700B14286 /* XCDYouTubePlayerScript.h in Copy Files */ = {isa = PBXBuildFile; fileRef = C2FB52DC1918F88C00B2CBE6 /* XCDYouTubePlayerScript.h */; };
 		C20F579D18817D5400EDBFB0 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C20F579C18817D5400EDBFB0 /* XCTest.framework */; };
 		C20F57A818817D5400EDBFB0 /* XCDYouTubeClientTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = C20F57A718817D5400EDBFB0 /* XCDYouTubeClientTestCase.m */; };
 		C20F57AF1881804D00EDBFB0 /* libXCDYouTubeKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2A3F2CD17F4827800AC1C3B /* libXCDYouTubeKit.a */; };
@@ -136,6 +138,8 @@
 			dstPath = "include/${PRODUCT_NAME}";
 			dstSubfolderSpec = 16;
 			files = (
+				01E5F8BA1D11ACF700B14286 /* XCDYouTubePlayerScript.h in Copy Files */,
+				01E5F8B91D11ACCE00B14286 /* XCDYouTubeLogger.h in Copy Files */,
 				01591B361BE379B4000DAC26 /* AVPlayerViewController+Migration.h in Copy Files */,
 				C2D0CBAD19122B3B00DA8CD4 /* XCDYouTubeKit.h in Copy Files */,
 				C2A7E8B518EE1EFC005B8B5F /* XCDYouTubeClient.h in Copy Files */,
@@ -155,6 +159,9 @@
 		01591B2D1BE37261000DAC26 /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		01591B2F1BE37337000DAC26 /* AVPlayerViewController+Migration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AVPlayerViewController+Migration.h"; sourceTree = "<group>"; };
 		01591B301BE37337000DAC26 /* AVPlayerViewController+Migration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AVPlayerViewController+Migration.m"; sourceTree = "<group>"; };
+		01E5F8B61D11AA7F00B14286 /* XCDYouTubeLogger+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XCDYouTubeLogger+Private.h"; sourceTree = "<group>"; };
+		01E5F8B71D11AA7F00B14286 /* AppledocSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppledocSettings.plist; sourceTree = "<group>"; };
+		01E5F8B81D11AA7F00B14286 /* Configuration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Configuration.plist; sourceTree = "<group>"; };
 		C20F579B18817D5400EDBFB0 /* XCDYouTubeKit iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "XCDYouTubeKit iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C20F579C18817D5400EDBFB0 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		C20F57A718817D5400EDBFB0 /* XCDYouTubeClientTestCase.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XCDYouTubeClientTestCase.m; sourceTree = "<group>"; };
@@ -331,6 +338,9 @@
 		C2A3F2D217F4827800AC1C3B /* XCDYouTubeKit */ = {
 			isa = PBXGroup;
 			children = (
+				01E5F8B61D11AA7F00B14286 /* XCDYouTubeLogger+Private.h */,
+				01E5F8B71D11AA7F00B14286 /* AppledocSettings.plist */,
+				01E5F8B81D11AA7F00B14286 /* Configuration.plist */,
 				C26231A5191D74D300D23900 /* Info.plist */,
 				C25308C318D7392500132734 /* XCDYouTubeClient.h */,
 				C25308C418D7392500132734 /* XCDYouTubeClient.m */,
